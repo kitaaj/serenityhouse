@@ -1,0 +1,2 @@
+C:/Users/kitaa/Desktop/dev/Flutter/mental_health_support/android/app/.cxx/Debug/g3t3v6au/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/kitaa/Desktop/dev/Flutter/mental_health_support/android/app/.cxx/Debug/g3t3v6au/arm64-v8a/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "853478540242",
+    "project_id": "serenity-house-io",
+    "storage_bucket": "serenity-house-io.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853478540242:android:f8ab94df274dfe3a4cbe0b",
+        "android_client_info": {
+          "package_name": "com.example.mental_health_support"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBN2Q6d725dOEm1eI3fEzzgV2K0yQ4tB70"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853478540242:android:d81b3dac0553bb894cbe0b",
+        "android_client_info": {
+          "package_name": "com.serenityhouse.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBN2Q6d725dOEm1eI3fEzzgV2K0yQ4tB70"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

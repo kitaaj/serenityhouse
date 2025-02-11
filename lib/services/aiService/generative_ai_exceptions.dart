@@ -1,0 +1,5 @@
+import 'package:google_generative_ai/google_generative_ai.dart';
+
+extension GenerativeAIExceptionErrors on GenerativeAIException{
+
+}
