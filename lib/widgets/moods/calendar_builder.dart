@@ -3,7 +3,6 @@ import 'package:mental_health_support/widgets/moods/calendar_day.dart';
 import 'package:mental_health_support/widgets/moods/daily_mood.dart';
 
 class CalendarBuilder extends StatelessWidget {
-  // Fixed typo in class name
   final DateTime firstDay;
   final int daysInMonth;
 

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mental_health_support/main.dart';
+import 'package:mental_health_support/helpers/logger.dart';
 import 'package:mental_health_support/models/achievement.dart';
-import 'package:mental_health_support/services/auth/bloc/achievementBloc/achievement_event.dart';
 import 'package:mental_health_support/widgets/moods/achievement_card.dart';
 import 'package:mental_health_support/services/auth/bloc/achievementBloc/achievement_bloc.dart';
 import 'package:mental_health_support/services/auth/bloc/achievementBloc/achievement_state.dart';
+import 'package:mental_health_support/services/auth/bloc/achievementBloc/achievement_event.dart';
 
 class MoodAchievements extends StatefulWidget {
   const MoodAchievements({super.key});
@@ -31,9 +31,11 @@ class _MoodAchievementsState extends State<MoodAchievements> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Achievements',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 16),
 
@@ -46,7 +48,7 @@ class _MoodAchievementsState extends State<MoodAchievements> {
                   return Text('Error: ${achievementState.message}');
                 }
                 if (achievementState is AchievementsLoaded) {
-                  'Logging from the MoodAchievements class file: We are here ${achievementState.achievements.toString()}'
+                  'Logging from the MoodAchievements class file: We are here ${achievementState.achievements.map((element) => Achievement(id: element.id, title: element.title, description: element.description, codePoint: element.codePoint, fontFamily: element.fontFamily))}'
                       .log();
                   return _buildAchievementsGrid(achievementState.achievements);
                 }

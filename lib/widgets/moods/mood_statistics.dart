@@ -27,20 +27,24 @@ class MoodStatistics extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
+                spacing: 12.0,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Monthly Mood Distribution',
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                  const SizedBox(height: 12),
                   Expanded(
                     child: BlocBuilder<MoodBloc, MoodState>(
                       builder: (context, state) {
                         if (state is MoodLoadingState) {
-                          return const Center(child: CircularProgressIndicator());
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
                         }
-      
+
                         if (state is MoodErrorState) {
                           return Center(
                             child: Text(
@@ -49,13 +53,13 @@ class MoodStatistics extends StatelessWidget {
                             ),
                           );
                         }
-      
+
                         final moods =
                             state is MoodLoadedState
                                 ? state.moods
                                 : <MoodEntry>[];
                         final moodCounts = _calculateMoodCounts(moods);
-      
+
                         return moods.isEmpty
                             ? Center(
                               child: Column(
@@ -97,7 +101,9 @@ class MoodStatistics extends StatelessWidget {
                                           rodIndex,
                                         ) => BarTooltipItem(
                                           '${MoodType.values[group.x.toInt()].label}\n${rod.toY} entries',
-                                          TextStyle(color: colorScheme.onSurface),
+                                          TextStyle(
+                                            color: colorScheme.onSurface,
+                                          ),
                                         ),
                                   ),
                                 ),
@@ -111,7 +117,9 @@ class MoodStatistics extends StatelessWidget {
                                             top: 4.0,
                                           ),
                                           child: Text(
-                                            MoodType.values[value.toInt()].label,
+                                            MoodType
+                                                .values[value.toInt()]
+                                                .label,
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: colorScheme.onSurface,
@@ -149,14 +157,17 @@ class MoodStatistics extends StatelessWidget {
                                 ),
                                 barGroups:
                                     MoodType.values.map((mood) {
-                                      final index = MoodType.values.indexOf(mood);
+                                      final index = MoodType.values.indexOf(
+                                        mood,
+                                      );
                                       return BarChartGroupData(
                                         x: index,
                                         barRods: [
                                           BarChartRodData(
                                             toY:
                                                 moodCounts.isNotEmpty
-                                                    ? moodCounts[index].toDouble()
+                                                    ? moodCounts[index]
+                                                        .toDouble()
                                                     : 0.0,
                                             color: mood.color,
                                             width: 20,

@@ -18,24 +18,18 @@ class CalendarDay extends StatefulWidget {
 class _CalendarDayState extends State<CalendarDay> {
   @override
   Widget build(BuildContext context) {
-    // final moods = context.select<MoodBloc, List<MoodEntry>>(
-    //   (bloc) => bloc.state is MoodLoadedState
-    //       ? (bloc.state as MoodLoadedState)
-    //           .moods
-    //           .where((m) => isSameDay(m.date, widget.date))
-    //           .toList()
-    //       : [],
-    // );
     return BlocSelector<MoodBloc, MoodState, List<MoodEntry>?>(
-      selector:
-          (state) =>
-              state is MoodLoadedState
-                  ? state.moodMap[DateTime(
-                    widget.date.year,
-                    widget.date.month,
-                    widget.date.day,
-                  )]
-                  : null,
+      selector: (state) {
+        if (state is MoodLoadedState) {
+          final dateKey = DateTime(
+            widget.date.year,
+            widget.date.month,
+            widget.date.day,
+          );
+          return state.moodMap[dateKey];
+        }
+        return null;
+      },
       builder: (context, moods) {
         final hasMood = moods != null && moods.isNotEmpty;
         final primaryMood = hasMood ? moods.first : null;

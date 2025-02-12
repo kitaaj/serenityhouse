@@ -1,17 +1,23 @@
 import 'package:mental_health_support/models/mood.dart';
-import 'package:mental_health_support/services/cloud/cloud_journal_entry.dart';
 
-abstract class MoodState {}
+abstract class MoodState {
+  const MoodState();
+}
 
-class MoodLoadingState extends MoodState {}
+class MoodLoadingState extends MoodState {
+  final List<MoodEntry>? previousMoods;
+  const MoodLoadingState({this.previousMoods});
+}
 
 class MoodLoadedState extends MoodState {
   final List<MoodEntry> moods;
   final Map<DateTime, List<MoodEntry>> moodMap;
 
-  MoodLoadedState(this.moods) : moodMap = _createMoodMap(moods);
+  MoodLoadedState(this.moods) : moodMap = _groupMoodsByDate(moods);
 
-  static Map<DateTime, List<MoodEntry>> _createMoodMap(List<MoodEntry> moods) {
+  static Map<DateTime, List<MoodEntry>> _groupMoodsByDate(
+    List<MoodEntry> moods,
+  ) {
     final map = <DateTime, List<MoodEntry>>{};
     for (final mood in moods) {
       final date = DateTime(mood.date.year, mood.date.month, mood.date.day);
@@ -23,21 +29,5 @@ class MoodLoadedState extends MoodState {
 
 class MoodErrorState extends MoodState {
   final String message;
-  MoodErrorState(this.message);
-}
-
-class JournalEntryLoadedState extends MoodState {
-  final JournalEntry? journalEntry;
-
-  JournalEntryLoadedState(this.journalEntry);
-
-  List<Object?> get props => [journalEntry];
-}
-
-class JournalEntryErrorState extends MoodState {
-  final String message;
-
-  JournalEntryErrorState(this.message);
-
-  List<Object?> get props => [message];
+  const MoodErrorState(this.message);
 }
