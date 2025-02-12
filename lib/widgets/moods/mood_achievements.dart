@@ -46,7 +46,7 @@ class _MoodAchievementsState extends State<MoodAchievements> {
                   return Text('Error: ${achievementState.message}');
                 }
                 if (achievementState is AchievementsLoaded) {
-                  'We are here ${achievementState.achievements.toString()}'
+                  'Logging from the MoodAchievements class file: We are here ${achievementState.achievements.toString()}'
                       .log();
                   return _buildAchievementsGrid(achievementState.achievements);
                 }

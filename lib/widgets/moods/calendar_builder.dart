@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:mental_health_support/models/mood.dart';
-import 'package:mental_health_support/services/auth/bloc/moodbloc/mood_bloc.dart';
-import 'package:mental_health_support/services/auth/bloc/moodbloc/mood_event.dart';
-import 'package:mental_health_support/services/auth/bloc/moodbloc/mood_state.dart';
 import 'package:mental_health_support/widgets/moods/calendar_day.dart';
+import 'package:mental_health_support/widgets/moods/daily_mood.dart';
 
 class CalendarBuilder extends StatelessWidget {
   // Fixed typo in class name
@@ -27,7 +22,7 @@ class CalendarBuilder extends StatelessWidget {
           final date = firstDay.add(Duration(days: index));
           return CalendarDay(
             date: date,
-            onPressed: () => _showDailyMood(context, date),
+            onPressed: () => showDailyMood(context, date),
           );
         }, childCount: daysInMonth),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -38,51 +33,5 @@ class CalendarBuilder extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _showDailyMood(BuildContext context, DateTime date) {
-    final moods =
-        context
-            .select<MoodBloc, List<MoodEntry>>(
-              (bloc) =>
-                  bloc.state is MoodLoadedState
-                      ? (bloc.state as MoodLoadedState).moods
-                      : [],
-            )
-            .where((mood) => _isSameDay(mood.date, date))
-            .toList();
-
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: Text(DateFormat('EEEE, MMM d').format(date)),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (moods.isEmpty)
-                  const Text('No mood entries')
-                else
-                  ...moods.map(
-                    (mood) => ListTile(
-                      leading: Text(mood.emoji),
-                      title: Text(mood.label),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed:
-                            () => context.read<MoodBloc>().add(
-                              DeleteMoodEvent(mood.id),
-                            ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-    );
-  }
-
-  bool _isSameDay(DateTime a, DateTime b) {
-    return a.year == b.year && a.month == b.month && a.day == b.day;
   }
 }

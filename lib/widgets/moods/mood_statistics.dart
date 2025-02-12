@@ -157,7 +157,7 @@ class MoodStatistics extends StatelessWidget {
                                             toY:
                                                 moodCounts.isNotEmpty
                                                     ? moodCounts[index].toDouble()
-                                                    : 0,
+                                                    : 0.0,
                                             color: mood.color,
                                             width: 20,
                                             borderRadius: BorderRadius.only(

@@ -19,6 +19,16 @@ class HiveMoodRepository {
     await _moodBox.add(mood);
   }
 
+  Future<void> updateMood(String documentId, MoodEntry updatedMood) async {
+    final index = _moodBox.values.toList().indexWhere((m) => m.id == documentId);
+    
+    if (index != -1) {
+      await _moodBox.putAt(index, updatedMood);
+    } else {
+      throw Exception('Mood entry not found for id: $documentId');
+    }
+  }
+
   Future<void> deleteMood(String documentId) async {
     final key = _moodBox.values.toList().indexWhere((m) => m.id == documentId);
     if (key != -1) await _moodBox.deleteAt(key);

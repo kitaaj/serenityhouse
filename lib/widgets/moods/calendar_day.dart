@@ -1,29 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:mental_health_support/helpers/helper_functions/is_same_day.dart';
 import 'package:mental_health_support/models/mood.dart';
 import 'package:mental_health_support/services/auth/bloc/moodbloc/mood_bloc.dart';
 import 'package:mental_health_support/services/auth/bloc/moodbloc/mood_state.dart';
 
-class CalendarDay extends StatelessWidget {
+class CalendarDay extends StatefulWidget {
   final DateTime date;
   final VoidCallback onPressed;
 
   const CalendarDay({super.key, required this.date, required this.onPressed});
 
   @override
+  State<CalendarDay> createState() => _CalendarDayState();
+}
+
+class _CalendarDayState extends State<CalendarDay> {
+  @override
   Widget build(BuildContext context) {
+    // final moods = context.select<MoodBloc, List<MoodEntry>>(
+    //   (bloc) => bloc.state is MoodLoadedState
+    //       ? (bloc.state as MoodLoadedState)
+    //           .moods
+    //           .where((m) => isSameDay(m.date, widget.date))
+    //           .toList()
+    //       : [],
+    // );
     return BlocSelector<MoodBloc, MoodState, List<MoodEntry>?>(
       selector:
           (state) =>
               state is MoodLoadedState
-                  ? state.moodMap[DateTime(date.year, date.month, date.day)]
+                  ? state.moodMap[DateTime(
+                    widget.date.year,
+                    widget.date.month,
+                    widget.date.day,
+                  )]
                   : null,
       builder: (context, moods) {
         final hasMood = moods != null && moods.isNotEmpty;
         final primaryMood = hasMood ? moods.first : null;
 
         return GestureDetector(
-          onTap: onPressed,
+          onTap: widget.onPressed,
           child: Container(
             margin: const EdgeInsets.all(2),
             decoration: BoxDecoration(
@@ -45,7 +63,7 @@ class CalendarDay extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    date.day.toString(),
+                    widget.date.day.toString(),
                     style: TextStyle(
                       color:
                           hasMood
@@ -54,11 +72,6 @@ class CalendarDay extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  if (hasMood)
-                    Text(
-                      primaryMood!.emoji,
-                      style: const TextStyle(fontSize: 14),
-                    ),
                 ],
               ),
             ),

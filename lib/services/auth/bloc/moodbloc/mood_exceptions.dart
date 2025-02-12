@@ -1,0 +1,1 @@
+class CouldNotFetchMoodsException implements Exception{}

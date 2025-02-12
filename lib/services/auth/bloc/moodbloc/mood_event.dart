@@ -1,4 +1,3 @@
-
 import 'package:mental_health_support/models/mood.dart';
 
 abstract class MoodEvent {}
@@ -18,4 +17,16 @@ class DeleteMoodEvent extends MoodEvent {
 class MoodsUpdatedEvent extends MoodEvent {
   final List<MoodEntry> moods;
   MoodsUpdatedEvent(this.moods);
+}
+
+class UpdateMoodEvent extends MoodEvent {
+  final MoodEntry updatedMood;
+
+  UpdateMoodEvent(this.updatedMood);
+}
+
+class MoodErrorEvent extends MoodEvent {
+ String error;
+
+  MoodErrorEvent(this.error);
 }

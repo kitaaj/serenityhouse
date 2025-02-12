@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mental_health_support/helpers/helper_functions/is_same_day.dart';
 import 'package:mental_health_support/models/mood.dart';
 
 class MoodTimeline extends StatelessWidget {
@@ -117,12 +118,8 @@ class MoodTimeline extends StatelessWidget {
     final DateTime now = DateTime.now();
     return List.generate(7, (index) {
       final DateTime date = now.subtract(Duration(days: 6 - index));
-      final int count = moods.where((m) => _isSameDay(m.date, date)).length;
+      final int count = moods.where((m) => isSameDay(m.date, date)).length;
       return FlSpot(index.toDouble(), count.toDouble());
     });
-  }
-
-  bool _isSameDay(DateTime a, DateTime b) {
-    return a.year == b.year && a.month == b.month && a.day == b.day;
   }
 }

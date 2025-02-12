@@ -72,11 +72,11 @@ Future<void> setupLocator() async {
   final moodsBox = await Hive.openBox<MoodEntry>('moodsBox');
   final achievementsBox = await Hive.openBox<Achievement>('achievements');
 
-  'Opening Hive achievements box...'.log();
+  'Logging from the main file: Opening Hive achievements box...'.log();
   try {
     final achievementsBox = await Hive.openBox<Achievement>('achievements');
 
-    'Achievements box status: ${achievementsBox.isOpen ? "Open" : "Closed"}'
+    'Logging from the main file: Achievements box status: ${achievementsBox.isOpen ? "Open" : "Closed"}'
         .log();
   } catch (e) {
     'Error opening achievements box: $e'.log();

@@ -234,9 +234,13 @@ class FirebaseCloudStorage {
   Future<void> updateMood({
     required String documentId,
     required String newMood,
+    required String? notes,
+    required List<String>? tags,
   }) async {
     await firestore.collection('moods').doc(documentId).update({
       moodFieldName: newMood,
+      moodNotesFieldName: notes,
+      moodTagsFieldName: tags,
     });
   }
 

@@ -1,4 +1,5 @@
 import 'package:mental_health_support/models/mood.dart';
+import 'package:mental_health_support/services/cloud/cloud_journal_entry.dart';
 
 abstract class MoodState {}
 
@@ -23,4 +24,20 @@ class MoodLoadedState extends MoodState {
 class MoodErrorState extends MoodState {
   final String message;
   MoodErrorState(this.message);
+}
+
+class JournalEntryLoadedState extends MoodState {
+  final JournalEntry? journalEntry;
+
+  JournalEntryLoadedState(this.journalEntry);
+
+  List<Object?> get props => [journalEntry];
+}
+
+class JournalEntryErrorState extends MoodState {
+  final String message;
+
+  JournalEntryErrorState(this.message);
+
+  List<Object?> get props => [message];
 }

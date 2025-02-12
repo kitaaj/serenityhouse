@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mental_health_support/services/auth/bloc/moodbloc/mood_state.dart';
+import 'package:mental_health_support/widgets/moods/mood_legend.dart';
 import 'package:mental_health_support/widgets/moods/ai_insights.dart';
+import 'package:mental_health_support/widgets/moods/mood_app_bar.dart';
+import 'package:mental_health_support/widgets/moods/mood_timeline.dart';
+import 'package:mental_health_support/widgets/moods/mood_statistics.dart';
 import 'package:mental_health_support/widgets/moods/calendar_builder.dart';
 import 'package:mental_health_support/widgets/moods/mood_achievements.dart';
-import 'package:mental_health_support/widgets/moods/mood_app_bar.dart';
-import 'package:mental_health_support/widgets/moods/mood_legend.dart';
-import 'package:mental_health_support/widgets/moods/mood_statistics.dart';
-import 'package:mental_health_support/widgets/moods/mood_timeline.dart';
+import 'package:mental_health_support/services/auth/bloc/moodbloc/mood_state.dart';
 
 class MainContent extends StatelessWidget {
   final MoodLoadedState state;
