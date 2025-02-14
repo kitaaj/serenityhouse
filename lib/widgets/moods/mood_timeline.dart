@@ -29,103 +29,115 @@ class MoodTimeline extends StatelessWidget {
             : 1.0;
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 12.0,
-        children: [
-          Text(
-            'Timeline',
-            style: Theme.of(
-              context,
-            ).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600),
-          ),
-          SizedBox(
-            height: 200, // Fixed height for chart container
-            child: LineChart(
-              LineChartData(
-                minX: 0,
-                maxX: 6,
-                minY: 0,
-                maxY: maxY,
-                lineTouchData: LineTouchData(enabled: false),
-                lineBarsData: [
-                  LineChartBarData(
-                    spots: spots,
-                    color: Theme.of(context).colorScheme.primary,
-                    barWidth: 3,
-                    isCurved: true,
-                    dotData: FlDotData(show: true),
-                    belowBarData: BarAreaData(show: false),
-                  ),
-                ],
-                titlesData: FlTitlesData(
-                  bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      interval: 1,
-                      reservedSize: 30, // Add reserved space for bottom titles
-                      getTitlesWidget: (value, meta) {
-                        if (!value.isFinite || value < 0 || value > 6) {
-                          return const SizedBox.shrink();
-                        }
-                        final date = DateTime.now().subtract(
-                          Duration(days: 7 - value.toInt()),
-                        );
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(
-                            DateFormat('d MMM').format(date),
-                            style: TextStyle(
-                              fontSize: 10,
-                              color:
-                                  Theme.of(context).textTheme.bodyMedium?.color,
-                            ),
-                          ),
-                        );
-                      },
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        elevation: 2,
+
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 12.0,
+            children: [
+              Text(
+                'Timeline',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 200, // Fixed height for chart container
+                child: LineChart(
+                  LineChartData(
+                    minX: 0,
+                    maxX: 6,
+                    minY: 0,
+                    maxY: maxY,
+                    lineTouchData: LineTouchData(enabled: false),
+                    lineBarsData: [
+                      LineChartBarData(
+                        spots: spots,
+                        color: Theme.of(context).colorScheme.primary,
+                        barWidth: 3,
+                        isCurved: false,
+                        dotData: FlDotData(show: true),
+                        belowBarData: BarAreaData(show: true),
+                      ),
+                    ],
+                    titlesData: FlTitlesData(
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          interval: 1,
+                          reservedSize:
+                              30, // Add reserved space for bottom titles
+                          getTitlesWidget: (value, meta) {
+                            if (!value.isFinite || value < 0 || value > 6) {
+                              return const SizedBox.shrink();
+                            }
+                            final date = DateTime.now().subtract(
+                              Duration(days: 6 - value.toInt()),
+                            );
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Text(
+                                DateFormat('d/M').format(date),
+                                style: TextStyle(
+                                  fontSize: 8,
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).textTheme.bodyMedium?.color,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      leftTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          interval: 10,
+                          reservedSize: 30, // Maintain reserved space
+                          getTitlesWidget: (value, meta) {
+                            return Text(
+                              value.toInt().toString(),
+                              style: TextStyle(
+                                fontSize: 7,
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).textTheme.bodyMedium?.color,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      rightTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      topTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
                     ),
-                  ),
-                  leftTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      interval: 1,
-                      reservedSize: 30, // Maintain reserved space
-                      getTitlesWidget: (value, meta) {
-                        return Text(
-                          value.toInt().toString(),
-                          style: TextStyle(
-                            fontSize: 10,
-                            color:
-                                Theme.of(context).textTheme.bodyMedium?.color,
-                          ),
-                        );
-                      },
+                    gridData: FlGridData(
+                      show: true,
+                      drawVerticalLine: false,
+                      horizontalInterval: 1,
                     ),
-                  ),
-                  rightTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
-                  topTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
-                ),
-                gridData: FlGridData(
-                  show: true,
-                  drawVerticalLine: false,
-                  horizontalInterval: 1,
-                ),
-                borderData: FlBorderData(
-                  show: true,
-                  border: Border.all(
-                    color: Theme.of(context).dividerColor,
-                    width: 1,
+                    borderData: FlBorderData(
+                      show: true,
+                      border: Border.all(
+                        color: Theme.of(context).dividerColor,
+                        width: 1,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

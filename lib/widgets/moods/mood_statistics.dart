@@ -18,9 +18,9 @@ class MoodStatistics extends StatelessWidget {
       child: SizedBox(
         height: 260,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Card(
-            elevation: 4,
+            elevation: 2,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
@@ -100,35 +100,14 @@ class MoodStatistics extends StatelessWidget {
                                           rod,
                                           rodIndex,
                                         ) => BarTooltipItem(
-                                          '${MoodType.values[group.x.toInt()].label}\n${rod.toY} entries',
+                                          '${MoodType.values[group.x.toInt()].label}\n${rod.toY.toStringAsFixed(0)} entries',
                                           TextStyle(
-                                            color: colorScheme.onSurface,
+                                            color: colorScheme.onPrimary,
                                           ),
                                         ),
                                   ),
                                 ),
                                 titlesData: FlTitlesData(
-                                  bottomTitles: AxisTitles(
-                                    sideTitles: SideTitles(
-                                      showTitles: true,
-                                      getTitlesWidget: (value, meta) {
-                                        return Padding(
-                                          padding: const EdgeInsets.only(
-                                            top: 4.0,
-                                          ),
-                                          child: Text(
-                                            MoodType
-                                                .values[value.toInt()]
-                                                .label,
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: colorScheme.onSurface,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
                                   leftTitles: AxisTitles(),
                                   topTitles: const AxisTitles(),
                                   rightTitles: const AxisTitles(),
@@ -136,11 +115,6 @@ class MoodStatistics extends StatelessWidget {
                                 gridData: FlGridData(
                                   show: true,
                                   horizontalInterval: 1,
-                                  getDrawingHorizontalLine:
-                                      (value) => FlLine(
-                                        color: Colors.grey.shade300,
-                                        strokeWidth: 0.5,
-                                      ),
                                 ),
                                 borderData: FlBorderData(
                                   show: true,
@@ -170,7 +144,7 @@ class MoodStatistics extends StatelessWidget {
                                                         .toDouble()
                                                     : 0.0,
                                             color: mood.color,
-                                            width: 20,
+                                            width: 30,
                                             borderRadius: BorderRadius.only(
                                               topLeft: Radius.circular(4.0),
                                               topRight: Radius.circular(4.0),

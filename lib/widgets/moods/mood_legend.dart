@@ -8,7 +8,7 @@ class MoodLegend extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: SizedBox(
           height: 40,
           child: ListView.separated(

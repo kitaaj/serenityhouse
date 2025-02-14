@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mental_health_support/enums/mood_type.dart';
 import 'package:mental_health_support/widgets/moods/mood_legend.dart';
 import 'package:mental_health_support/widgets/moods/ai_insights.dart';
 import 'package:mental_health_support/widgets/moods/mood_app_bar.dart';
+import 'package:mental_health_support/widgets/moods/mood_playlist.dart';
 import 'package:mental_health_support/widgets/moods/mood_timeline.dart';
 import 'package:mental_health_support/widgets/moods/mood_statistics.dart';
 import 'package:mental_health_support/widgets/moods/calendar_builder.dart';
@@ -18,15 +20,18 @@ class MainContent extends StatelessWidget {
     final firstDay = DateTime(today.year, today.month, 1);
     final lastDay = DateTime(today.year, today.month + 1, 0);
     final daysInMonth = lastDay.day;
+    final currentMood = state.moods.isNotEmpty 
+        ? MoodType.fromLabel(state.moods.last.label) 
+        : MoodType.neutral;
+
     return CustomScrollView(
       slivers: [
         MoodSliverAppBar(context: context),
-
         CalendarBuilder(firstDay: firstDay, daysInMonth: daysInMonth),
-
         MoodStatistics(),
         MoodLegend(),
         SliverToBoxAdapter(child: MoodTimeline(moods: state.moods)),
+        SliverToBoxAdapter(child: MoodPlaylist(mood: currentMood)),
         MoodAchievements(),
         SliverToBoxAdapter(child: AIInsightsCard()),
       ],

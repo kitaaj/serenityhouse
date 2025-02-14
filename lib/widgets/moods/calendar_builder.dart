@@ -15,7 +15,7 @@ class CalendarBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(8.0),
       sliver: SliverGrid(
         delegate: SliverChildBuilderDelegate((context, index) {
           final date = firstDay.add(Duration(days: index));
