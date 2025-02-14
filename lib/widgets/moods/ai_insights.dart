@@ -1,56 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:mental_health_support/helpers/helper_functions/generate_insights.dart';
-import 'package:mental_health_support/models/mood.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mental_health_support/services/auth/bloc/moodbloc/mood_bloc.dart';
+import 'package:mental_health_support/services/auth/bloc/moodbloc/mood_state.dart';
 
 class AIInsightsCard extends StatelessWidget {
-  final List<MoodEntry> moods;
-
-  const AIInsightsCard({super.key, required this.moods});
+  const AIInsightsCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final insights = generateInsights(moods);
+    return BlocBuilder<MoodBloc, MoodState>(
+      builder: (context, state) {
+        if (state is! MoodLoadedState) return const SizedBox.shrink();
 
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+        try {
+          return Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(
-                    Icons.insights,
-                    color: Theme.of(context).colorScheme.primary,
+                  ListTile(
+                    leading: Icon(Icons.insights),
+                    title: Text(
+                      'Personalized Insights',
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Your Insights',
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      fontWeight: FontWeight.w600,
+
+                  ...(state.generatedInsights ?? ['Loading insights...']).map(
+                    (insight) => Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text('• $insight'),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
-              ...insights.map(
-                (insight) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.circle, size: 8),
-                      const SizedBox(width: 12),
-                      Expanded(child: Text(insight)),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
+          );
+        } catch (e) {
+          return ErrorWidget('Failed to load insights: $e');
+        }
+      },
     );
   }
 }

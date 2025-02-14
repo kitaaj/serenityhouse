@@ -13,6 +13,7 @@ import 'package:mental_health_support/services/auth/bloc/authBloc/auth_bloc.dart
 import 'package:mental_health_support/services/auth/bloc/authBloc/auth_event.dart';
 import 'package:mental_health_support/services/auth/bloc/journalBloc/journal_bloc.dart';
 import 'package:mental_health_support/services/auth/bloc/moodbloc/mood_bloc.dart';
+import 'package:mental_health_support/services/auth/bloc/moodbloc/mood_event.dart';
 import 'package:mental_health_support/services/local/repository/achievement_repository.dart';
 import 'package:mental_health_support/theme/theme_manager.dart';
 import 'package:mental_health_support/utilities/dependency_injection.dart';
@@ -40,7 +41,9 @@ Future<void> main() async {
           BlocProvider<AuthBloc>(
             create: (_) => getIt<AuthBloc>()..add(const AuthEventInitialize()),
           ),
-          BlocProvider<MoodBloc>(create: (_) => getIt<MoodBloc>()),
+          BlocProvider<MoodBloc>(
+  create: (_) => getIt<MoodBloc>()..add(LoadMoodsEvent()),
+),
           BlocProvider<AchievementBloc>(
             create:
                 (context) => AchievementBloc(

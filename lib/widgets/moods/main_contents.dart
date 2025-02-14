@@ -28,7 +28,7 @@ class MainContent extends StatelessWidget {
         MoodLegend(),
         SliverToBoxAdapter(child: MoodTimeline(moods: state.moods)),
         MoodAchievements(),
-        SliverToBoxAdapter(child: AIInsightsCard(moods: state.moods)),
+        SliverToBoxAdapter(child: AIInsightsCard()),
       ],
     );
   }

@@ -1,3 +1,4 @@
+import 'package:mental_health_support/helpers/logger.dart';
 import 'package:mental_health_support/models/mood.dart';
 import 'package:mental_health_support/services/cloud/firebase_cloud_storage.dart';
 import 'package:mental_health_support/services/local/repository/hive_mood_repository.dart';
@@ -16,31 +17,54 @@ class FirebaseMoodRepository implements MoodRepository {
        _hive = hive,
        _userId = userId;
 
-  @override
+   @override
   Stream<List<MoodEntry>> getMoodsStream() async* {
-    // First yield cached moods
-    final cachedMoods = _hive.getCachedMoods();
-    if (cachedMoods.isNotEmpty) {
-      yield cachedMoods;
-    }
+    try {
+      final cachedMoods = _hive.getCachedMoods();
+      if (cachedMoods.isNotEmpty) {
+        yield cachedMoods;
+      }
 
-    // Then stream from Firestore and update cache
-    yield* _firestore.allMoods(_userId).asyncMap((moods) async {
-      await _hive.cacheMoods(moods.toList());
-      return moods.toList();
-    });
+      yield* _firestore.allMoods(_userId).asyncMap((moods) async {
+        try {
+          await _hive.cacheMoods(moods.toList());
+          ('Updated local mood cache').log();
+        } catch (e) {
+      ('Failed to update local cache', e).log();
+        }
+        return moods.toList();
+      }).handleError((error) {
+        'Firestore stream error, error'.log();
+        if (cachedMoods.isNotEmpty) {
+          return cachedMoods;
+        }
+        throw error;
+      });
+    } catch (e) {
+      'Failed to initialize mood stream, $e'.log();
+      rethrow;
+    }
   }
 
   @override
   Future<String> addMood(MoodEntry mood) async {
-    final docRef = await _firestore.createMood(
-      userId: _userId,
-      label: mood.label,
-      notes: mood.notes,
-      tags: mood.tags,
-    );
-    await _hive.addMood(mood.copyWith(id: docRef.id));
-    return docRef.id;
+    try {
+      final docRef = await _firestore.createMood(
+        userId: _userId,
+        label: mood.label,
+        notes: mood.notes,
+        tags: mood.tags,
+      );
+      
+      final newMood = mood.copyWith(id: docRef.id);
+      await _hive.addMood(newMood);
+      
+      'Added mood ${docRef.id}'.log();
+      return docRef.id;
+    } catch (e) {
+      'Failed to add mood, $e'.log();
+      rethrow;
+    }
   }
 
   @override

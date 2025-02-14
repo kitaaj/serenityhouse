@@ -7,6 +7,7 @@ import 'package:mental_health_support/services/local/repository/mood_repository.
 
 class MoodBloc extends Bloc<MoodEvent, MoodState> {
   final MoodRepository _repository;
+  StreamSubscription? _moodsSubscription;
 
   MoodBloc(this._repository) : super(MoodLoadingState()) {
     on<LoadMoodsEvent>(_onLoadMoods);
@@ -19,17 +20,17 @@ class MoodBloc extends Bloc<MoodEvent, MoodState> {
     LoadMoodsEvent event,
     Emitter<MoodState> emit,
   ) async {
+    _moodsSubscription?.cancel();
     await emit.forEach<List<MoodEntry>>(
-      _repository.getMoodsStream(), // This returns a Stream<List<MoodEntry>>
+      _repository.getMoodsStream(),
       onData: (moods) => MoodLoadedState(moods),
-      onError: (error, stackTrace) => MoodErrorState(error.toString()),
+      onError: (error, _) => MoodErrorState(error.toString()),
     );
   }
 
   Future<void> _onAddMood(AddMoodEvent event, Emitter<MoodState> emit) async {
     try {
       await _repository.addMood(event.mood);
-      // Reload moods after adding
       add(LoadMoodsEvent());
     } catch (e) {
       emit(MoodErrorState(e.toString()));
@@ -42,7 +43,6 @@ class MoodBloc extends Bloc<MoodEvent, MoodState> {
   ) async {
     try {
       await _repository.deleteMood(event.moodId);
-      // Reload moods after deletion
       add(LoadMoodsEvent());
     } catch (e) {
       emit(MoodErrorState('Failed to delete mood: ${e.toString()}'));
@@ -55,10 +55,15 @@ class MoodBloc extends Bloc<MoodEvent, MoodState> {
   ) async {
     try {
       await _repository.updateMood(event.updatedMood);
-      // Reload moods after updating
       add(LoadMoodsEvent());
     } catch (e) {
       emit(MoodErrorState('Update failed: ${e.toString()}'));
     }
+  }
+
+  @override
+  Future<void> close() {
+    _moodsSubscription?.cancel();
+    return super.close();
   }
 }
