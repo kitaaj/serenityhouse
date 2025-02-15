@@ -20,15 +20,16 @@ import 'package:mental_health_support/utilities/dependency_injection.dart';
 import 'package:mental_health_support/utilities/set_up_locator.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: ".env");
+  final recaptchaKey = dotenv.env['RECAPTCHA_V3_SITE_KEY'] ?? '';
+  assert(recaptchaKey.isNotEmpty, 'RECAPTCHA_V3_SITE_KEY is missing in .env');
   await FirebaseAppCheck.instance.activate(
     androidProvider: AndroidProvider.debug,
-    webProvider: ReCaptchaV3Provider(dotenv.env['RECAPTCHA_V3_SITE_KEY'] ?? ''),
+    webProvider: ReCaptchaV3Provider(recaptchaKey),
   );
 
   // Setup Dependency Injection
@@ -42,8 +43,8 @@ Future<void> main() async {
             create: (_) => getIt<AuthBloc>()..add(const AuthEventInitialize()),
           ),
           BlocProvider<MoodBloc>(
-  create: (_) => getIt<MoodBloc>()..add(LoadMoodsEvent()),
-),
+            create: (_) => getIt<MoodBloc>()..add(LoadMoodsEvent()),
+          ),
           BlocProvider<AchievementBloc>(
             create:
                 (context) => AchievementBloc(
@@ -64,6 +65,3 @@ Future<void> main() async {
     ),
   );
 }
-
-
-
