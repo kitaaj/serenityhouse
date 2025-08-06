@@ -1,6 +1,6 @@
-# Mental Health Support App
+# Serenity House
 
-A Flutter application for mental health support with offline-first architecture using Brick and Supabase.
+A mental well-being self-improvement mobile application. Tagline: "Own Your Own Happiness"
 
 ## Features
 
