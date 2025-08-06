@@ -53,6 +53,4 @@ class GeminiService {
       .join('\n');
 }
 
-// extension Log on Object {
-//   void log() => devTools.log(toString());
-// }
+
